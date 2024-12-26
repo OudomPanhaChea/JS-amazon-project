@@ -70,8 +70,6 @@ products.forEach((product) => {
 const displayProHTML = document.querySelector('.js-product-grid');
 displayProHTML.innerHTML = productHTML;
 
-
-
 // Cart quantity increment
 function cartQuantityIncrement(productId) {
   let cartQuantity = 0;
