@@ -1,4 +1,4 @@
-// import products from '../data/products';
+import { cart } from '../data/cart.js';
 
 let productHTML = '';
 
@@ -48,7 +48,7 @@ products.forEach((product) => {
 
       <div class="product-spacer"></div>
 
-      <div class="added-to-cart">
+      <div class="added-to-cart js-addedToCart-${product.id}">
         <img src="images/icons/checkmark.png">
         Added
       </div>
@@ -69,7 +69,8 @@ displayProHTML.innerHTML = productHTML;
 const addToCartElement = document.querySelectorAll('.js-addToCart');
 addToCartElement.forEach((button) => {
   button.addEventListener('click', () => {
-    const productId = button.dataset.productId;
+    // const productId = button.dataset.productId;
+    const { productId } = button.dataset; // destructuring
     
     let matchingItem;
     cart.forEach((item) => {
@@ -95,15 +96,28 @@ addToCartElement.forEach((button) => {
         const selectQtyElement = document.querySelectorAll(`.js-select-qty-${productId}`);
         selectQtyElement.forEach((select) => {
           item.quantity += Number(select.value) - 1;
-          console.log(Number(select.value));
+          select.value = 1; // to make sure the value is back to 1
         });
       }
       cartQuantity += item.quantity;
     });
-    
-    // console.log(cartQuantity);
 
     const cartQtyElement = document.querySelector('.js-cartQty');
     cartQtyElement.innerHTML = cartQuantity;
+
+    const addedToCartElement = document.querySelectorAll(`.js-addedToCart-${productId}`);
+    addedToCartElement.forEach((element) => {
+      element.style.opacity = 1;
+
+      let timer;
+      timer = 
+      setTimeout(() => {
+        element.style.opacity = 0;
+      }, 2000);
+
+      button.addEventListener('click', () => {
+        clearTimeout(timer);
+      });
+    });
   });
 });

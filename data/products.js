@@ -656,5 +656,33 @@ const products = [
       "apparel",
       "mens"
     ]
+  }, {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a956",
+    image: "images/products/umbrella.jpg",
+    name: "Umberlla Cyber Punk 2077",
+    rating: {
+      stars: 5.0,
+      count: 10000
+    },
+    priceCents: 5000,
+    keywords: [
+      "umbrella",
+      "cyberpunk",
+      "2077"
+    ]
+  }, {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a957",
+    image: "images/products/plate.png",
+    name: "King of Plates 2077",
+    rating: {
+      stars: 5.0,
+      count: 8000
+    },
+    priceCents: 4000,
+    keywords: [
+      "plates",
+      "king",
+      "2077"
+    ]
   }
 ];
