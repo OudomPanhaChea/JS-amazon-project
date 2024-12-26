@@ -30,7 +30,9 @@ products.forEach((product) => {
         class="product-quantity-container
         data-product-id=""${product.id}"
       ">
-        <select class="js-select-qty-${product.id}">
+        <select 
+          class="js-select-qty-${product.id}"
+        >
           <option selected value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -68,14 +70,14 @@ const addToCartElement = document.querySelectorAll('.js-addToCart');
 addToCartElement.forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;
-
+    
     let matchingItem;
     cart.forEach((item) => {
       if(productId === item.productId) {
         matchingItem = item;
       }
     });
-
+    
     if(matchingItem) {
       matchingItem.quantity++;
     }
@@ -87,21 +89,21 @@ addToCartElement.forEach((button) => {
     }
 
     let cartQuantity = 0;
-
+    
     cart.forEach((item) => {
-      cartQuantity+=item.quantity;
+      if(item.productId === productId) {
+        const selectQtyElement = document.querySelectorAll(`.js-select-qty-${productId}`);
+        selectQtyElement.forEach((select) => {
+          item.quantity += Number(select.value) - 1;
+          console.log(Number(select.value));
+        });
+      }
+      cartQuantity += item.quantity;
     });
+    
+    // console.log(cartQuantity);
 
     const cartQtyElement = document.querySelector('.js-cartQty');
     cartQtyElement.innerHTML = cartQuantity;
-  });
-});
-
-// const productId = dataset.;
-const selectQtyElement = document.querySelector(`.js-select-qty-${productId}`);
-selectQtyElement.forEach((button) => {
-  button.addEventListener('click', () => {
-    console.log(selectQtyElement.value);
-
   });
 });
