@@ -4,17 +4,20 @@ import { formateCurrency } from './utils/money.js';
 
 let cartSummeryHTML = '';
 
+// console.log(cart);
+// console.log(products);
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
 
   let matchingProduct;
   products.forEach((product) => {
-    if(productId === product.id) {
+    if(product.id === productId) {
       matchingProduct = product;
     }
   });
 
-  // console.log(matchingProduct);
+  console.log(matchingProduct);
+
   cartSummeryHTML += `
     <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
       <div class="delivery-date">
@@ -30,7 +33,7 @@ cart.forEach((cartItem) => {
             ${matchingProduct.name}
           </div>
           <div class="product-price">
-            $${formateCurrency(cartItem.priceCents)}
+            $${formateCurrency(matchingProduct.priceCents)}
           </div>
           <div class="product-quantity">
             <span>

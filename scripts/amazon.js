@@ -32,9 +32,9 @@ products.forEach((product) => {
       </div>
 
       <div 
-        class="product-quantity-container
+        class="product-quantity-container"
         data-product-id=""${product.id}"
-      ">
+      >
         <select 
           class="js-select-qty-${product.id}"
         >
@@ -60,8 +60,7 @@ products.forEach((product) => {
 
       <button 
         class="add-to-cart-button button-primary js-addToCart"
-        data-product-id="${product.id}
-      ">
+        data-product-id="${product.id}">
         Add to Cart
       </button>
     </div>
@@ -92,7 +91,7 @@ function cartQuantityIncrement(productId) {
 }
 
 // Added to cart message
-function addedToCartMessage(productId) {
+function addedToCartMessage(productId, button) {
   const addedToCartElement = document.querySelectorAll(`.js-addedToCart-${productId}`);
   addedToCartElement.forEach((element) => {
     element.style.opacity = 1;
@@ -116,6 +115,6 @@ addToCartElement.forEach((button) => {
     const { productId } = button.dataset; // destructuring
     addToCart(productId);
     cartQuantityIncrement(productId);
-    addedToCartMessage(productId);
+    addedToCartMessage(productId, button);
   });
 });
