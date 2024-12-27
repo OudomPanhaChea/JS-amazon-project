@@ -1,9 +1,17 @@
 // products.js
 import { products } from '../data/products.js';
 // cart.js
-import { cart, addToCart } from '../data/cart.js';
+import { cart, addToCart, saveToLocalStorage } from '../data/cart.js';
 // utils
 import { formateCurrency } from './utils/money.js';
+
+let totalQty = JSON.parse(localStorage.getItem('totalQty')) || 0;
+const cartQtyElement = document.querySelector('.js-cartQty');
+// console.log(cart.length);
+if(cart.length === 0) {
+  totalQty = 0;
+}
+cartQtyElement.innerHTML = totalQty;
 
 let productHTML = '';
 
@@ -74,6 +82,7 @@ displayProHTML.innerHTML = productHTML;
 // Cart quantity increment
 function cartQuantityIncrement(productId) {
   let cartQuantity = 0;
+
     
   cart.forEach((cartItem) => {
     if(cartItem.productId === productId) {
@@ -82,12 +91,17 @@ function cartQuantityIncrement(productId) {
         cartItem.quantity += Number(select.value) - 1;
         select.value = 1; // to make sure the value is back to 1
       });
+      console.log(cartItem.quantity);
+      console.log(cart);
     }
     cartQuantity += cartItem.quantity;
   });
   // update cart quantity
-  const cartQtyElement = document.querySelector('.js-cartQty');
   cartQtyElement.innerHTML = cartQuantity;
+
+  totalQty = cartQuantity;
+  localStorage.setItem('totalQty', JSON.stringify(totalQty));
+  saveToLocalStorage();
 }
 
 // Added to cart message
@@ -118,3 +132,4 @@ addToCartElement.forEach((button) => {
     addedToCartMessage(productId, button);
   });
 });
+

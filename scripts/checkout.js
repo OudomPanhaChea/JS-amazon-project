@@ -2,10 +2,21 @@ import { cart, deleteFromCart } from '../data/cart.js';
 import { products } from '../data/products.js'; 
 import { formateCurrency } from './utils/money.js';
 
+function displayCheckout() {
+  const checkoutQtyElement = document.querySelector('.js-checkoutQty');
+  if(cart.length > 1) {
+    checkoutQtyElement.innerHTML = cart.length + ' items';
+  }
+  else {
+    checkoutQtyElement.innerHTML = cart.length + ' item';
+  }
+}
+
+displayCheckout();
+
+
 let cartSummeryHTML = '';
 
-// console.log(cart);
-// console.log(products);
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
 
@@ -15,8 +26,7 @@ cart.forEach((cartItem) => {
       matchingProduct = product;
     }
   });
-
-  console.log(matchingProduct);
+  console.log(cart);
 
   cartSummeryHTML += `
     <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -109,5 +119,9 @@ deleteLinksElement.forEach((link) => {
 
     const cartItemContainerElement = document.querySelector(`.js-cart-item-container-${productId}`);
     cartItemContainerElement.remove();
+    displayCheckout();
+    if(cart.length === 0) {
+      window.location.href = 'amazon.html';
+    }
   });
 });

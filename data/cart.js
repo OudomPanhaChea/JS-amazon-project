@@ -11,7 +11,7 @@ if(!cart) {
   }];
 }
 
-function saveToLocalStorage() {
+export function saveToLocalStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
@@ -21,7 +21,6 @@ export function addToCart(productId) {
   cart.forEach((cartItem) => {
     if(productId === cartItem.productId) {
       matchingcartItem = cartItem;
-      // console.log(matchingcartItem);
     }
   });
   
@@ -51,5 +50,3 @@ export function deleteFromCart(productId) {
 
   saveToLocalStorage();
 }
-console.log(cart);
-// localStorage.removeItem('cart');
