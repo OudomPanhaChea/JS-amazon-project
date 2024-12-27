@@ -1,19 +1,9 @@
-import { cart, deleteFromCart } from '../data/cart.js';
+import { cart, deleteFromCart, saveToLocalStorage } from '../data/cart.js';
 import { products } from '../data/products.js'; 
 import { formateCurrency } from './utils/money.js';
 
-function displayCheckout() {
-  const checkoutQtyElement = document.querySelector('.js-checkoutQty');
-  if(cart.length > 1) {
-    checkoutQtyElement.innerHTML = cart.length + ' items';
-  }
-  else {
-    checkoutQtyElement.innerHTML = cart.length + ' item';
-  }
-}
 
 displayCheckout();
-
 
 let cartSummeryHTML = '';
 
@@ -26,7 +16,6 @@ cart.forEach((cartItem) => {
       matchingProduct = product;
     }
   });
-  console.log(cart);
 
   cartSummeryHTML += `
     <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -125,3 +114,21 @@ deleteLinksElement.forEach((link) => {
     }
   });
 });
+
+// Update quantity in checkout.html
+function displayCheckout() {
+  let totalQty = 0;
+  const checkoutQtyElement = document.querySelector('.js-checkoutQty');
+  const itemCountElement = document.querySelector('.js-items-count');
+  cart.forEach((cartItem) => {
+    totalQty += cartItem.quantity;
+  });
+  if(totalQty > 1) {
+    checkoutQtyElement.innerHTML = totalQty + ' items';
+    itemCountElement.innerHTML = `Items (${totalQty}):`;
+  }
+  else {
+    checkoutQtyElement.innerHTML = totalQty + ' item';
+    itemCountElement.innerHTML = `Item (${totalQty}):`;
+  }
+}
