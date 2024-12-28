@@ -1,4 +1,3 @@
-
 export let cart = JSON.parse(localStorage.getItem('cart'));
 
 if(!cart) {
@@ -49,4 +48,13 @@ export function deleteFromCart(productId) {
   cart = newCart;
 
   saveToLocalStorage();
+}
+
+export function updateQuantity(productId, quantity) {
+  cart.forEach((cartItem) => {
+    if(productId === cartItem.productId) {
+      cartItem.quantity = quantity;
+      saveToLocalStorage();
+    }
+  });
 }

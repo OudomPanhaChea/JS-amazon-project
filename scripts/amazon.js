@@ -5,13 +5,21 @@ import { cart, addToCart, saveToLocalStorage } from '../data/cart.js';
 // utils
 import { formateCurrency } from './utils/money.js';
 
+
+// displaying cart total quantity
 export let totalQty = JSON.parse(localStorage.getItem('totalQty')) || 0;
+let total = 0;
+cart.forEach((cartItem) => {
+  total += cartItem.quantity;
+  totalQty = total;
+});
 const cartQtyElement = document.querySelector('.js-cartQty');
 if(cart.length === 0) {
   totalQty = 0;
 }
 cartQtyElement.innerHTML = totalQty;
 
+// Display products
 let productHTML = '';
 
 products.forEach((product) => {
@@ -101,8 +109,6 @@ function cartQuantityIncrement(productId) {
         cartItem.quantity += Number(select.value) - 1;
         select.value = 1; // to make sure the value is back to 1
       });
-      console.log(cartItem.quantity);
-      console.log(cart);
     }
     cartQuantity += cartItem.quantity;
   });
@@ -110,9 +116,11 @@ function cartQuantityIncrement(productId) {
   cartQtyElement.innerHTML = cartQuantity;
 
   totalQty = cartQuantity;
+
   localStorage.setItem('totalQty', JSON.stringify(totalQty));
   saveToLocalStorage();
 }
+
 
 // Added to cart message
 function addedToCartMessage(productId, button) {

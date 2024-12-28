@@ -1,9 +1,8 @@
-import { cart, deleteFromCart, saveToLocalStorage } from '../data/cart.js';
+import { cart, deleteFromCart, updateQuantity } from '../data/cart.js';
 import { products } from '../data/products.js'; 
 import { formateCurrency } from './utils/money.js';
 
-
-displayCheckout();
+displayCheckoutTotalQty();
 
 let cartSummeryHTML = '';
 
@@ -36,10 +35,20 @@ cart.forEach((cartItem) => {
           </div>
           <div class="product-quantity">
             <span>
-              Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+              Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
             </span>
-            <span class="update-quantity-link link-primary">
+            <span 
+              class="update-quantity-link link-primary js-update-link"
+              data-product-id="${matchingProduct.id}"
+            >
               Update
+            </span>
+            <input class="quantity-input js-quantity-input" data-product-id="${matchingProduct.id}" type="text">
+            <span 
+              class="save-quantity-link link-primary js-save-link"
+              data-product-id="${matchingProduct.id}"
+            >
+              save
             </span>
             <span 
               class="delete-quantity-link link-primary js-delete-link"
@@ -97,9 +106,15 @@ cart.forEach((cartItem) => {
   `;
 });
 
-const orderSummaryElement = document.querySelector('.js-orderSummary');
-orderSummaryElement.innerHTML = cartSummeryHTML;
+// Display HTML elements on checkout
+function displayHTML() {
+  const orderSummaryElement = document.querySelector('.js-orderSummary');
+  orderSummaryElement.innerHTML = cartSummeryHTML;
+}
 
+displayHTML();
+
+// delete from cart
 const deleteLinksElement = document.querySelectorAll('.js-delete-link');
 deleteLinksElement.forEach((link) => {
   link.addEventListener('click', () => {
@@ -108,15 +123,56 @@ deleteLinksElement.forEach((link) => {
 
     const cartItemContainerElement = document.querySelector(`.js-cart-item-container-${productId}`);
     cartItemContainerElement.remove();
-    displayCheckout();
+    displayCheckoutTotalQty();
     if(cart.length === 0) {
       window.location.href = 'amazon.html';
     }
   });
 });
 
-// Update quantity in checkout.html
-function displayCheckout() {
+// update quantity (when clicking update)
+const updateLinkElement = document.querySelectorAll('.js-update-link');
+updateLinkElement.forEach((update) => {
+  update.addEventListener('click', () => {
+    let productId = update.dataset.productId;
+
+    const cartItemContainerElement = document.querySelector(`.js-cart-item-container-${productId}`);
+    cartItemContainerElement.classList.add("is-editing-quantity");
+  });
+});
+
+// save quantity (when clicking save)
+const saveLinkElement = document.querySelectorAll(".js-save-link");
+saveLinkElement.forEach((save) => {
+  save.addEventListener('click', () => {
+    let productId = save.dataset.productId; 
+
+    const cartItemContainerElement = document.querySelector(`.js-cart-item-container-${productId}`);
+    cartItemContainerElement.classList.remove("is-editing-quantity");
+
+    const qtyInputElement = document.querySelectorAll(".js-quantity-input");
+    const qtyLabelElement = document.querySelectorAll(`.js-quantity-label-${productId}`);
+    qtyInputElement.forEach((input) => {
+      if(input.dataset.productId === productId) {
+        const quantity = Number(input.value);
+        updateQuantity(productId, quantity); // this will update and save to localstorage
+        // update quantity in each items
+        qtyLabelElement.forEach((label) => {
+          cart.forEach((cartItem) => {
+            if(cartItem.productId === productId) {
+              label.innerHTML = quantity;
+            }
+          });
+        });
+      }
+    });
+    // displayHTML();
+    displayCheckoutTotalQty();
+  });
+});
+
+// Update and display quantity in checkout.html
+function displayCheckoutTotalQty() {
   let totalQty = 0;
   const checkoutQtyElement = document.querySelector('.js-checkoutQty');
   const itemCountElement = document.querySelector('.js-items-count');
