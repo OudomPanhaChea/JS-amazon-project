@@ -121,8 +121,6 @@ deleteLinksElement.forEach((link) => {
     const productId = link.dataset.productId;
     deleteFromCart(productId);
 
-    const cartItemContainerElement = document.querySelector(`.js-cart-item-container-${productId}`);
-    cartItemContainerElement.remove();
     displayCheckoutTotalQty();
     if(cart.length === 0) {
       window.location.href = 'amazon.html';
@@ -141,35 +139,64 @@ updateLinkElement.forEach((update) => {
   });
 });
 
+// save quantity (when pressing enter)
+const qtyInputElement = document.querySelectorAll(".js-quantity-input");
+qtyInputElement.forEach((input) => {
+  input.addEventListener('keypress', (event) => {
+    if(event.key === "Enter") {
+      let productId = input.dataset.productId;
+
+      savingQuantity(productId);
+    }
+  });
+})
+
 // save quantity (when clicking save)
 const saveLinkElement = document.querySelectorAll(".js-save-link");
 saveLinkElement.forEach((save) => {
   save.addEventListener('click', () => {
     let productId = save.dataset.productId; 
 
-    const cartItemContainerElement = document.querySelector(`.js-cart-item-container-${productId}`);
-    cartItemContainerElement.classList.remove("is-editing-quantity");
-
-    const qtyInputElement = document.querySelectorAll(".js-quantity-input");
-    const qtyLabelElement = document.querySelectorAll(`.js-quantity-label-${productId}`);
-    qtyInputElement.forEach((input) => {
-      if(input.dataset.productId === productId) {
-        const quantity = Number(input.value);
-        updateQuantity(productId, quantity); // this will update and save to localstorage
-        // update quantity in each items
-        qtyLabelElement.forEach((label) => {
-          cart.forEach((cartItem) => {
-            if(cartItem.productId === productId) {
-              label.innerHTML = quantity;
-            }
-          });
-        });
-      }
-    });
-    // displayHTML();
-    displayCheckoutTotalQty();
+    savingQuantity(productId);
   });
 });
+
+function savingQuantity(productId) {
+  const cartItemContainerElement = document.querySelector(`.js-cart-item-container-${productId}`);
+  cartItemContainerElement.classList.remove("is-editing-quantity");
+
+  const qtyLabelElement = document.querySelectorAll(`.js-quantity-label-${productId}`);
+  qtyInputElement.forEach((input) => {
+    if(input.dataset.productId === productId) {
+      let quantity;
+      if(input.value >= 0 && input.value <= 1000) {
+        quantity = Number(input.value);
+        if(quantity === 0) {
+          deleteFromCart(productId);
+        }
+      }
+      else {
+        cart.forEach((cartItem) => {
+          if(cartItem.productId === productId) {
+            quantity = cartItem.quantity;
+          }
+        })
+        // display error message
+      }
+      updateQuantity(productId, quantity); // this will update and save to localstorage
+
+      // update quantity in each items (display HTML)
+      qtyLabelElement.forEach((label) => {
+        cart.forEach((cartItem) => {
+          if(cartItem.productId === productId) {
+            label.innerHTML = quantity;
+          }
+        });
+      });
+    }
+  });
+  displayCheckoutTotalQty();
+}
 
 // Update and display quantity in checkout.html
 function displayCheckoutTotalQty() {

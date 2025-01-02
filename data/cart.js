@@ -48,6 +48,9 @@ export function deleteFromCart(productId) {
   cart = newCart;
 
   saveToLocalStorage();
+
+  const cartItemContainerElement = document.querySelector(`.js-cart-item-container-${productId}`);
+  cartItemContainerElement.remove();
 }
 
 export function updateQuantity(productId, quantity) {
