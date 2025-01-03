@@ -17,6 +17,7 @@ export function renderPaymentSummary() {
 
     totalItem += cartItem.quantity;
   });
+  
   let displayTotalItem = totalItem = totalItem > 1 ? `Items (${totalItem}):` : `Item (${totalItem}):`;
 
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
