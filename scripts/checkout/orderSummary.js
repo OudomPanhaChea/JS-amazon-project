@@ -1,14 +1,8 @@
 import { cart, deleteFromCart, updateQuantity, updateDeliveryOption } from '../../data/cart.js';
 import { products, getProducts } from '../../data/products.js'; 
 import { formateCurrency } from '../utils/money.js';
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions, getDeliveryOption } from '../../data/deliveryoptions.js'; 
+import { deliveryOptions, getDeliveryOption, calculateDeliveryDate } from '../../data/deliveryoptions.js'; 
 import { renderPaymentSummary } from './paymentSummary.js';
-
-// const today = dayjs();
-// const deliveryDate = today.add(7, 'days');
-// deliveryDate.format('dddd, MMMM D');
-// console.log(deliveryDate.format('dddd, MMMM D'));
 
 export function renderOrderSummary() {
 
@@ -18,21 +12,14 @@ export function renderOrderSummary() {
 
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
-
     const matchingProduct = getProducts(productId);
-
     const deliveryOptionId = cartItem.deliveryOptionId;
-
     const deliveryOption = getDeliveryOption(deliveryOptionId);
-
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDay, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM, D'); // format date
 
     cartSummeryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
         <div class="delivery-date">
-          Delivery date: ${dateString}
+          Delivery date: ${calculateDeliveryDate(deliveryOption)}
         </div>
 
         <div class="cart-item-details-grid">
@@ -87,9 +74,9 @@ export function renderOrderSummary() {
   function deliveryOptionsHTML(matchingProduct, cartItem) {
     let HTML = '';
     deliveryOptions.forEach((deliveryOption) => {
-      const today = dayjs();
-      const deliveryDate = today.add(deliveryOption.deliveryDay, 'days');
-      const dateString = deliveryDate.format('dddd, MMMM, D'); // format date
+      // const today = dayjs();
+      // const deliveryDate = today.add(deliveryOption.deliveryDay, 'days');
+      // const dateString = deliveryDate.format('dddd, MMMM, D'); // format date
       const priceString = deliveryOption.priceCents === 0 ? 
         'FREE' : `$${formateCurrency(deliveryOption.priceCents)} -`;
 
@@ -104,7 +91,7 @@ export function renderOrderSummary() {
             name="delivery-option-${matchingProduct.id}">
           <div>
             <div class="delivery-option-date">
-              ${dateString}
+              ${calculateDeliveryDate(deliveryOption)}
             </div>
             <div class="delivery-option-price">
               ${priceString} Shipping
