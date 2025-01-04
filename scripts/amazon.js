@@ -1,7 +1,7 @@
 // products.js
-import { products } from '../data/products.js';
+import { products } from './data/products.js';
 // cart.js
-import { cart, addToCart, saveToLocalStorage } from '../data/cart.js';
+import { cart, addToCart, saveToLocalStorage } from './data/cart.js';
 // utils
 import { formateCurrency } from './utils/money.js';
 
