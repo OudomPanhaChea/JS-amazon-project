@@ -57,6 +57,24 @@ class Clothing extends Product {
   }
 }
 
+class Appliances extends Product {
+  instructionLink;
+  warrantyLink;
+
+  constructor(productDetails) {
+    super(productDetails);
+    this.instructionLink = 'images/appliance-instructions.png'
+    this.warrantyLink = 'images/appliance-warranty.png'
+  }
+
+  extraInfoHTML() {
+    return `
+      <a href="${this.instructionLink}" target="_blank">Instruction</a>
+      <a href="${this.warrantyLink}" target="_blank">Warranty</a>
+    `;
+  }
+}
+
 /*
 const date = new Date();
 console.log(date);
@@ -776,5 +794,10 @@ export const products = [
   if(productDetails.type === 'clothing') {
     return new Clothing(productDetails);
   }
+  const appliances = productDetails.keywords.filter(x => x === 'appliances');
+  if(appliances[0] === 'appliances') {
+    return new Appliances(productDetails);
+  }
   return new Product(productDetails);
 });
+

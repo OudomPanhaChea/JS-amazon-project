@@ -128,7 +128,7 @@ export function renderOrderSummary() {
       renderOrderSummary();
       renderPaymentSummary();
       if(cart.length === 0) {
-        window.location.href = 'amazon.html';
+        window.location.href = 'index.html';
       }
     });
   });
