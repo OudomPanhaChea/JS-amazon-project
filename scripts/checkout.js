@@ -5,9 +5,22 @@ import { loadProduct, loadProductFetch } from "./data/products.js";
 // import './data/car.js';
 // import './data/backend-practice.js'
 
-Promise.all([
-  loadProductFetch(),
-]).then(() => {
+// async with await
+async function loadPage() {
+  try {
+    await loadProductFetch();
+  }
+  catch(error) {
+    console.log('Unexpected Error, Please try again later.');
+  }
   renderOrderSummary();
   renderPaymentSummary();
-});
+}
+loadPage()
+
+// Promise.all([
+//   loadProductFetch(),
+// ]).then(() => {
+//   renderOrderSummary();
+//   renderPaymentSummary();
+// });
