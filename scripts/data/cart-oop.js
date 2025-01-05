@@ -1,16 +1,15 @@
 
 // Use pascal case by named it by capital 'C'
 class Cart {
+  #localStorageKey;
+  cartItem = JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
 
   constructor(localStorageKey) { 
-    this.localStorageKey = localStorageKey;
+    this.#localStorageKey = localStorageKey;
   }
 
-  cartItem = JSON.parse(localStorage.getItem(this.localStorageKey)) || [];
-  localStorageKey = undefined;
-
   saveToLocalStorage() {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItem));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItem));
   }
 
   addToCart(productId) {
