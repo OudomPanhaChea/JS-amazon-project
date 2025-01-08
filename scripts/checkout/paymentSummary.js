@@ -82,12 +82,14 @@ export function renderPaymentSummary() {
         })
       });
   
-      const order = await response.json()
+      const order = await response.json();
       addOrder(order);
     }
     catch(error) {
       console.log('Unexpected Error. Try again later!');
     }
+
+    // after wait for response
 
     window.location.href = 'orders.html';
   });

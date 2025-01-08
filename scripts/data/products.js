@@ -7,9 +7,10 @@ export function getProducts(productId) {
       matchingProduct = product;
     }
   });
-
+  // console.log(products);
   return matchingProduct;
 }
+
 
 class Product {
   id;
@@ -75,34 +76,6 @@ class Appliances extends Product {
   }
 }
 
-/*
-const date = new Date();
-console.log(date);
-console.log(date.toLocaleDateString());
-console.log(date.toLocaleTimeString()); 
-*/
-
-// console.log(this);
-
-// const object2 = {
-//   a: 2,
-//   b: this.a
-// }
-
-// function logThis() {
-//   console.log(this);
-// }
-// logThis();
-// logThis.call('hello');
-
-// this
-// const object3 = {
-//   method: () => {
-//     console.log(this);
-//   }
-// };
-// object3.method();
-
 export let products = [];
 
 export function loadProductFetch() {
@@ -155,7 +128,6 @@ export function loadProduct(func) {
   xhr.open('GET', 'https://Supersimplebackend.dev/products');
   xhr.send();
 }
-
 
 // export const products = [
 //   {
