@@ -3,6 +3,7 @@ import { orders } from "./data/order.js";
 import { getProducts, loadProductFetch } from "./data/products.js";
 import { formateCurrency } from "./utils/money.js";
 import { toMonthAndDate } from "./utils/day.js";
+import { cart } from "./data/cart.js";
 
 console.log(orders);
 
@@ -17,12 +18,27 @@ async function loadingFromBackend() {
 }
 loadingFromBackend();
 
+// displaying cart total quantity
+let totalQty = JSON.parse(localStorage.getItem('totalQty')) || 0;
+
+let total = 0;
+cart.forEach((cartItem) => {
+  total += cartItem.quantity;
+  totalQty = total;
+});
+const cartQtyElement = document.querySelector('.js-cart-qty');
+if(cart.length === 0) {
+  totalQty = 0;
+}
+cartQtyElement.innerHTML = totalQty;
+
 function ordersHistory() {
   let summaryOrderHTML = '';
-
   orders.forEach((order) => {
     let summaryProductHTML = productHistory(order);
     const orderTime = toMonthAndDate(order.orderTime);
+
+    // const 
 
     summaryOrderHTML += `
       <div class="order-container"> 
@@ -57,9 +73,12 @@ function ordersHistory() {
 
 function productHistory(order) {
   let summaryProductHTML = '';
+
   order.products.forEach((product) => {
     const productId = product.productId;
     const matchingProduct = getProducts(productId);
+
+    const arrivingDate = toMonthAndDate(product.estimatedDeliveryTime);
 
     summaryProductHTML += `
       <div class="product-image-container">
@@ -71,7 +90,7 @@ function productHistory(order) {
           ${matchingProduct.name}
         </div>
         <div class="product-delivery-date">
-          Arriving on: June 17
+          Arriving on: ${arrivingDate}
         </div>
         <div class="product-quantity">
           Quantity: ${product.quantity}

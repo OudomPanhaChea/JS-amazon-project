@@ -3,6 +3,7 @@ import { getProducts } from "../data/products.js";
 import { getDeliveryOption } from "../data/deliveryoptions.js";
 import { formateCurrency } from "../utils/money.js";
 import { addOrder } from "../data/order.js";
+import { orders, passingOrder } from "../data/order.js";
 
 export function renderPaymentSummary() {
   let productPriceCents = 0;
@@ -71,22 +72,31 @@ export function renderPaymentSummary() {
 
   const placeOrderElement = document.querySelector('.js-place-order');
   placeOrderElement.addEventListener('click', async () => {
-    try {
-      const response = await fetch('https://supersimplebackend.dev/orders', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          cart: cart
-        })
+    if(cart == '') {
+      await fetch('https://supersimplebackend.dev/orders').then((response) => {
+        return response.json();
+      }).then((order) => {
+        passingOrder(order); // passingOrder use to save the loaded order from api
       });
-  
-      const order = await response.json();
-      addOrder(order);
     }
-    catch(error) {
-      console.log('Unexpected Error. Try again later!');
+    else {
+      try {
+        const response = await fetch('https://supersimplebackend.dev/orders', {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            cart: cart
+          })
+        });
+    
+        const order = await response.json();
+        addOrder(order);
+      }
+      catch(error) {
+        console.log('Unexpected Error. Try again later!');
+      }
     }
 
     // after wait for response

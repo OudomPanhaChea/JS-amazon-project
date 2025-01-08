@@ -4,6 +4,10 @@ export function saveToLocalStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
+export function saveTotalQty() {
+  localStorage.setItem('totalQty', JSON.stringify(totalQty));
+}
+
 // Add to cart
 export function addToCart(productId) {
   let matchingcartItem;

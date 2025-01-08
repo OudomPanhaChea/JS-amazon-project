@@ -5,6 +5,10 @@ export function addOrder(order) {
   saveToLocalStorage();
 }
 
+export function passingOrder(order) {
+  saveToLocalStorage();
+}
+
 function saveToLocalStorage() {
   localStorage.setItem('orders', JSON.stringify(orders));
 }

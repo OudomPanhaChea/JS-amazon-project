@@ -2,13 +2,14 @@
 import { products, loadProduct } from './data/products.js';
 // cart.js
 import { cart, addToCart, saveToLocalStorage } from './data/cart.js';
-// utils
-// import { formateCurrency } from './utils/money.js';
+
+import { saveTotalQty } from './data/cart.js';
 
 loadProduct(renderProductsGrid);
 
 // displaying cart total quantity
-export let totalQty = JSON.parse(localStorage.getItem('totalQty')) || 0;
+let totalQty = JSON.parse(localStorage.getItem('totalQty')) || 0;
+
 let total = 0;
 cart.forEach((cartItem) => {
   total += cartItem.quantity;
@@ -123,7 +124,7 @@ function renderProductsGrid() {
   
     totalQty = cartQuantity;
   
-    localStorage.setItem('totalQty', JSON.stringify(totalQty));
+    saveTotalQty();
     saveToLocalStorage();
   }
   
