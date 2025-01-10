@@ -1,7 +1,7 @@
 // products.js
 import { products, loadProduct } from './data/products.js';
 // cart.js
-import { cart, addToCart, saveToLocalStorage } from './data/cart.js';
+import { cart, addToCart, cartQuantityIncrement } from './data/cart.js';
 
 import { saveTotalQty } from './data/cart.js';
 
@@ -104,30 +104,6 @@ function renderProductsGrid() {
       addedToCartMessage(productId, button);
     });
   });
-  
-  // Cart quantity increment
-  function cartQuantityIncrement(productId) {
-    let cartQuantity = 0;
-  
-    cart.forEach((cartItem) => {
-      if(cartItem.productId === productId) {
-        const selectQtyElement = document.querySelectorAll(`.js-select-qty-${productId}`);
-        selectQtyElement.forEach((select) => {
-          cartItem.quantity += Number(select.value) - 1;
-          select.value = 1; // to make sure the value is back to 1
-        });
-      }
-      cartQuantity += cartItem.quantity;
-    });
-    // update cart quantity
-    cartQtyElement.innerHTML = cartQuantity;
-  
-    totalQty = cartQuantity;
-  
-    saveTotalQty();
-    saveToLocalStorage();
-  }
-  
   
   // Added to cart message
   function addedToCartMessage(productId, button) {

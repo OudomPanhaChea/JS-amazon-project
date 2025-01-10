@@ -99,7 +99,9 @@ export function renderPaymentSummary() {
       }
     }
 
-    // after wait for response
+    // after waiting for response from backend
+
+    localStorage.removeItem('cart');
 
     window.location.href = 'orders.html';
   });
