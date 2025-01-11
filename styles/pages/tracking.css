@@ -76,6 +76,9 @@
 .progress-bar {
   height: 100%;
   background-color: green;
+  background: linear-gradient(to left, green, lightgreen);
+  box-shadow: 0 0 3px -5px green, 0 3px lightgreen;
   border-radius: 50px;
-  width: 50%;
+  width: 0%;
+  transition: all .2s ease;
 }

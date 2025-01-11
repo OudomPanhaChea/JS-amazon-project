@@ -4,6 +4,7 @@ import { getProducts, loadProductFetch } from "./data/products.js";
 import { formateCurrency } from "./utils/money.js";
 import { toMonthAndDate } from "./utils/day.js";
 import { cart, addToCart, cartQuantityIncrement,  } from "./data/cart.js";
+import { setTrackingId } from "./data/trackingId.js";
 
 console.log(orders);
 
@@ -34,14 +35,13 @@ function renderOrdering() {
     totalQty = 0;
   }
   cartQtyElement.innerHTML = totalQty;
-
+  
   function ordersHistory() {
+
     let summaryOrderHTML = '';
     orders.forEach((order) => {
       let summaryProductHTML = productHistory(order);
       const orderTime = toMonthAndDate(order.orderTime);
-
-      // const 
 
       summaryOrderHTML += `
         <div class="order-container"> 
@@ -108,36 +108,48 @@ function renderOrdering() {
         </div>
     
         <div class="product-actions">
-          <a href="../tracking.html">
+          <p class="js-tracking"
+            data-product-id="${productId}"
+            data-order-id="${order.id}"
+          >
             <button class="track-package-button button-secondary">
               Track package
             </button>
-          </a>
+          </p>
         </div>
       `;
     });
 
     return summaryProductHTML;
   }
-  // clicked on buy again
+
   document.addEventListener('DOMContentLoaded', () => {
     const parentElement = document.body; // Use a stable parent element
     
     if (parentElement) {
       parentElement.addEventListener('click', (event) => {
+        // clicked on buy again
         const button = event.target.closest('.js-buy-again');
         if (button) {
-          console.log('hello');
           const {productId} = button.dataset;
           addToCart(productId);
           cartQuantityIncrement(productId, totalQty);
 
           renderOrdering();
         }
+        // click on tracking
+        const tracking = event.target.closest('.js-tracking');
+        if(tracking) {
+          const {productId} = tracking.dataset;
+          const {orderId} = tracking.dataset;
+          setTrackingId(productId, orderId);
+          window.location.href = '../tracking.html';
+        }
       });
     } else {
       console.log('Parent element not found');
     }
   });
+
 }
 
