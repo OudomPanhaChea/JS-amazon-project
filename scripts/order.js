@@ -143,7 +143,7 @@ function renderOrdering() {
           const {productId} = tracking.dataset;
           const {orderId} = tracking.dataset;
           setTrackingId(productId, orderId);
-          window.location.href = '../tracking.html';
+          window.location.href = 'tracking.html';
         }
       });
     } else {
